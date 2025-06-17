@@ -755,16 +755,113 @@
 
         /* Small mobile (< 480px) */
         @media (max-width: 480px) {
-            /* Stack complex tables */
-            .patient-details-table.mobile-stack tr[rowspan] {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 10px;
+            /* Stack all table cells on mobile */
+            .mobile-stack tr {
+                display: block;
+                margin-bottom: 15px;
+                padding: 10px;
+                border: 1px solid var(--gray-200);
+                border-radius: var(--radius);
+                background: white;
             }
             
-            .patient-details-table.mobile-stack td[rowspan] {
-                grid-column: 1;
-                order: 3;
+            .mobile-stack td {
+                display: block;
+                border: none !important;
+                padding: 8px 0;
+                width: 100% !important;
+            }
+            
+            .mobile-stack td strong {
+                display: block;
+                margin-bottom: 5px;
+                color: var(--gray-600);
+                font-size: 12px;
+                text-transform: uppercase;
+            }
+            
+            /* Handle rowspan cells specially */
+            .mobile-stack td[rowspan] {
+                order: 999;
+                margin-top: 10px;
+                padding-top: 15px;
+                border-top: 1px solid var(--gray-200);
+            }
+            
+            /* Hide section headers in tables on mobile */
+            .mobile-stack .section-header {
+                display: none;
+            }
+            
+            /* IOP table specific fixes */
+            #clinicalDataTable.mobile-stack .iop-header-row {
+                display: block;
+                margin-bottom: 10px;
+            }
+            
+            #clinicalDataTable.mobile-stack .iop-header-row td {
+                display: block;
+                width: 100% !important;
+                margin-bottom: 10px;
+            }
+            
+            #clinicalDataTable.mobile-stack .iop-section-header {
+                display: block !important;
+                margin: 10px -10px;
+                padding: 10px;
+            }
+            
+            #clinicalDataTable.mobile-stack .iop-method-cell {
+                padding: 10px 0;
+            }
+            
+            #clinicalDataTable.mobile-stack .iop-data-row {
+                display: block;
+                background: var(--gray-50);
+            }
+            
+            #clinicalDataTable.mobile-stack .mydriasis-cell {
+                order: 1;
+                border-top: none;
+                padding-top: 0;
+                margin-top: 0;
+            }
+            
+            /* Patient details table specific */
+            .patient-details-table.mobile-stack .address-cell {
+                width: 100% !important;
+                margin-top: 15px;
+            }
+            
+            .patient-details-table.mobile-stack .postcode-cell {
+                width: 100% !important;
+            }
+            
+            /* Visual fields table */
+            #visualFieldsTable.mobile-stack tr {
+                padding: 15px;
+            }
+            
+            #visualFieldsTable.mobile-stack td {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 5px 0;
+            }
+            
+            #visualFieldsTable.mobile-stack td input[type="checkbox"] {
+                margin: 0;
+            }
+            
+            /* Optometrist details table */
+            #optometristDetailsTable.mobile-stack tr {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            #optometristDetailsTable.mobile-stack td {
+                width: 100% !important;
             }
             
             /* Referral checkboxes */
@@ -776,10 +873,32 @@
             .checkbox-item {
                 width: 100%;
                 border-bottom: 1px solid var(--gray-100);
+                padding: 12px 0;
             }
             
             .checkbox-item:last-child {
                 border-bottom: none;
+            }
+            
+            /* Make sure voice fields expand properly */
+            .mobile-stack .voice-field {
+                width: 100% !important;
+                max-width: none !important;
+            }
+            
+            /* Footer checkboxes */
+            .footer-checkboxes {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 12px;
+            }
+            
+            .footer-checkboxes label {
+                display: flex;
+                align-items: center;
+                margin: 0;
+                padding: 8px 0;
             }
         }
 
@@ -924,6 +1043,23 @@
             color: var(--danger);
         }
 
+        /* Footer checkboxes - desktop */
+        @media (min-width: 481px) {
+            .footer-checkboxes {
+                display: inline;
+            }
+            
+            .footer-checkboxes label {
+                display: inline;
+                margin-left: 16px;
+            }
+            
+            .footer-checkboxes span {
+                display: inline !important;
+                margin-bottom: 0 !important;
+            }
+        }
+
         /* Smooth transitions */
         input, textarea, select, button {
             transition: all 0.2s ease;
@@ -935,7 +1071,30 @@
             outline-offset: 2px;
         }
 
-        /* Helper classes */
+        /* Mobile specific for better stacking */
+        .mobile-mode {
+            display: block !important;
+        }
+        
+        .mobile-mode tbody,
+        .mobile-mode tr,
+        .mobile-mode td {
+            display: block !important;
+            width: 100% !important;
+        }
+        
+        .mobile-mode tr {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            background: white;
+        }
+        
+        .mobile-mode td {
+            border: none !important;
+            padding: 8px 0 !important;
+        }
         .grid-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1526,7 +1685,7 @@
 
             <!-- Additional Clinical Data -->
             <table class="modern-table mobile-stack" id="clinicalDataTable">
-                <tr>
+                <tr class="iop-header-row">
                     <td rowspan="2" style="width: 20%;" class="mydriasis-cell">
                         <strong>Mydriasis</strong>
                         <div style="margin-top: 8px;">
@@ -1540,8 +1699,8 @@
                             </label>
                         </div>
                     </td>
-                    <td colspan="5" class="section-header">Intraocular Pressure (IOP)</td>
-                    <td style="width: 30%;">
+                    <td colspan="5" class="section-header iop-section-header">Intraocular Pressure (IOP)</td>
+                    <td style="width: 30%;" class="iop-method-cell">
                         <label style="display: inline-flex; align-items: center; margin-right: 16px;">
                             <input type="checkbox" name="contact" id="contact">
                             <span>Contact</span>
@@ -1552,7 +1711,7 @@
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr class="iop-data-row">
                     <td style="width: 8%;"><strong>RE:</strong></td>
                     <td style="width: 15%;">
                         <div class="voice-field">
@@ -1845,21 +2004,21 @@
             <!-- Footer -->
             <div style="text-align: center; margin-top: 24px; padding: 16px; background: var(--gray-50); border-radius: var(--radius); font-size: 12px;">
                 <p style="font-weight: 500;">Please obtain consent from the patient if not already given, and provide feedback to the referring optometrist</p>
-                <div style="margin-top: 12px;">
-                    <span style="font-weight: 500;">Referral Letter:</span>
-                    <label style="margin-left: 16px;">
+                <div class="footer-checkboxes" style="margin-top: 12px;">
+                    <span style="font-weight: 500; display: block; margin-bottom: 8px;">Referral Letter:</span>
+                    <label>
                         <input type="checkbox" name="letterPatient" id="letterPatient">
                         Patient Copy
                     </label>
-                    <label style="margin-left: 16px;">
+                    <label>
                         <input type="checkbox" name="letterPosted" id="letterPosted">
                         Posted to GP
                     </label>
-                    <label style="margin-left: 16px;">
+                    <label>
                         <input type="checkbox" name="letterHanded" id="letterHanded">
                         Handed to Px to take to GP/HES
                     </label>
-                    <label style="margin-left: 16px;">
+                    <label>
                         <input type="checkbox" name="letterFaxed" id="letterFaxed">
                         Faxed to HES
                     </label>
@@ -2497,9 +2656,9 @@
             const tables = document.querySelectorAll('.mobile-stack');
             
             tables.forEach(table => {
-                if (isMobile && !table.classList.contains('mobile-mode')) {
+                if (isMobile) {
                     table.classList.add('mobile-mode');
-                } else if (!isMobile && table.classList.contains('mobile-mode')) {
+                } else {
                     table.classList.remove('mobile-mode');
                 }
             });
